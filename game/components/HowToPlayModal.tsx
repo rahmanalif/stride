@@ -1,15 +1,16 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { useMemo, useState } from 'react';
 import { Modal, Pressable, Text, useWindowDimensions, View } from 'react-native';
 
 import { GardenIcon } from '@/game/components/GardenIcon';
 import { ThemeConfig } from '@/game/types';
 
+
 type HowToPlayModalProps = {
   onPlayNow: () => void;
   theme: ThemeConfig;
   visible: boolean;
 };
-
 export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProps) {
   const { width: screenWidth } = useWindowDimensions();
   const previewIcons = theme.icons.slice(0, 3);
@@ -90,13 +91,18 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
 
           <Pressable
             accessibilityRole="button"
-            className="min-h-[60px] items-center justify-center rounded-[24px]"
+            className="overflow-hidden rounded-[24px]"
             onPress={onPlayNow}
             style={({ pressed }) => ({
-              backgroundColor: theme.palette.primary,
               opacity: pressed ? 0.92 : 1,
             })}>
-            <Text className="text-[20px] font-extrabold text-white">Play Now</Text>
+            <LinearGradient
+              className="min-h-[60px] items-center justify-center"
+              colors={['#0040A1', '#0056D2']}
+              end={{ x: 1, y: 0.5 }}
+              start={{ x: 0, y: 0.5 }}>
+              <Text className="text-[20px] font-extrabold text-white">Play Now</Text>
+            </LinearGradient>
           </Pressable>
 
           <View className="min-h-[58px] items-center justify-center rounded-[24px] bg-[#E1E3E4]">

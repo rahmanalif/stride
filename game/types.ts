@@ -50,6 +50,11 @@ export interface ThemeConfig {
     max: number;
   };
   mistakeLimit: number;
+  comboWindowMs: number;
+  roundTimeRange: {
+    min: number;
+    max: number;
+  };
 }
 
 export interface GridCell {
@@ -63,6 +68,7 @@ export interface RoundDefinition {
   columns: number;
   difficulty: 'normal' | 'hard';
   gridCellCount: number;
+  roundTimeLimitSeconds: number;
   targetIds: IconId[];
   grid: GridCell[];
 }

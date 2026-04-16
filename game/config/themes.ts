@@ -40,4 +40,9 @@ export const gardeningTheme: ThemeConfig = {
     max: 3,
   },
   mistakeLimit: 3,
+  comboWindowMs: 2600,
+  roundTimeRange: {
+    min: 20,
+    max: 30,
+  },
 };
