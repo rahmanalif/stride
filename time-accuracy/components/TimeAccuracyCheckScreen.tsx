@@ -8,10 +8,11 @@ import { HowToPlayModal } from '@/time-accuracy/components/HowToPlayModal';
 import { InstructionsCard } from '@/time-accuracy/components/InstructionsCard';
 import { ResultsModal } from '@/time-accuracy/components/ResultsModal';
 import { ScoreHeader } from '@/time-accuracy/components/ScoreHeader';
+import { GameTab } from '@/time-accuracy/components/GameChrome';
 import { useAccuracyCheckGame } from '@/time-accuracy/hooks/useAccuracyCheckGame';
 
 type TimeAccuracyCheckScreenProps = {
-  onSelectTab?: (tab: 'symbol' | 'time') => void;
+  onSelectTab?: (tab: GameTab) => void;
 };
 
 export function TimeAccuracyCheckScreen({ onSelectTab }: TimeAccuracyCheckScreenProps) {

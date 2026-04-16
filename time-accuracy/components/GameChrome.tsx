@@ -10,9 +10,11 @@ type GameChromeProps = {
   title?: string;
 };
 
+export type GameTab = 'symbol' | 'order' | 'time';
+
 type BottomNavProps = {
-  activeTab: 'symbol' | 'time';
-  onSelectTab: (tab: 'symbol' | 'time') => void;
+  activeTab: GameTab;
+  onSelectTab: (tab: GameTab) => void;
 };
 
 export function TopBar({ onBack, title = 'Time Accuracy Check' }: GameChromeProps) {
@@ -38,7 +40,7 @@ export function BottomNav({ activeTab, onSelectTab }: BottomNavProps) {
   const insets = useSafeAreaInsets();
   const items = [
     { icon: 'view-grid-outline', key: 'symbol', label: 'Symbol Tap' },
-    { active: false, icon: 'format-list-bulleted', label: 'Order Memory' },
+    { icon: 'format-list-bulleted', key: 'order', label: 'Order Memory' },
     { icon: 'timer-outline', key: 'time', label: 'Time Accuracy' },
   ] as const;
 
@@ -66,19 +68,6 @@ export function BottomNav({ activeTab, onSelectTab }: BottomNavProps) {
         elevation: 18,
       }}>
       {items.map((item) => {
-        if ('active' in item) {
-          return (
-            <View key={item.label} className="px-4 py-2 opacity-70">
-              <View className="items-center">
-                <MaterialCommunityIcons color={TIME_ACCURACY_THEME.secondary} name={item.icon} size={18} />
-                <Text className="mt-1 text-[11px]" style={{ color: TIME_ACCURACY_THEME.secondary }}>
-                  {item.label}
-                </Text>
-              </View>
-            </View>
-          );
-        }
-
         const isActive = activeTab === item.key;
 
         return (

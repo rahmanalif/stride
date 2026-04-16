@@ -10,10 +10,10 @@ import { ScoreBoard } from '@/game/components/ScoreBoard';
 import { SymbolGrid } from '@/game/components/SymbolGrid';
 import { TargetSymbols } from '@/game/components/TargetSymbols';
 import { useSymbolTapGame } from '@/game/hooks/useSymbolTapGame';
-import { BottomNav } from '@/time-accuracy/components/GameChrome';
+import { BottomNav, GameTab } from '@/time-accuracy/components/GameChrome';
 
 type GameScreenProps = {
-  onSelectTab?: (tab: 'symbol' | 'time') => void;
+  onSelectTab?: (tab: GameTab) => void;
 };
 
 export function GameScreen({ onSelectTab }: GameScreenProps) {
