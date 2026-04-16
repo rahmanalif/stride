@@ -1,0 +1,32 @@
+export const TIME_ACCURACY_THEME = {
+  background: '#F8FAFB',
+  panel: '#FFFFFF',
+  panelAlt: '#F2F4F5',
+  primary: '#0F52BA',
+  primaryAlt: '#0056D2',
+  secondary: '#476554',
+  text: '#424654',
+  heading: '#191C1D',
+  mutedText: '#6B7280',
+  border: 'rgba(195,198,214,0.35)',
+  track: '#E5E7EB',
+  dashedTrack: 'rgba(195,198,214,0.55)',
+  circleCore: '#D8DCE2',
+  red: '#BA1A1A',
+  blue: '#0040A1',
+  success: '#DFF3E8',
+  successRing: '#6AA084',
+  danger: '#FCE4E4',
+  dangerRing: '#C25A5A',
+} as const;
+
+export const TIME_ACCURACY_RULES = {
+  countdownFrom: 3,
+  perfectThreshold: 6,
+  goodThreshold: 14,
+  roundDurationSeconds: 30,
+  tapPenalty: 8,
+  perfectPoints: 120,
+  goodPoints: 70,
+  maxRounds: 20,
+} as const;

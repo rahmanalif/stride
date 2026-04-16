@@ -10,8 +10,13 @@ import { ScoreBoard } from '@/game/components/ScoreBoard';
 import { SymbolGrid } from '@/game/components/SymbolGrid';
 import { TargetSymbols } from '@/game/components/TargetSymbols';
 import { useSymbolTapGame } from '@/game/hooks/useSymbolTapGame';
+import { BottomNav } from '@/time-accuracy/components/GameChrome';
 
-export function GameScreen() {
+type GameScreenProps = {
+  onSelectTab?: (tab: 'symbol' | 'time') => void;
+};
+
+export function GameScreen({ onSelectTab }: GameScreenProps) {
   const game = useSymbolTapGame(gardeningTheme);
 
   const handleBackPress = () => {
@@ -105,28 +110,7 @@ export function GameScreen() {
         </View>
       </ScrollView>
 
-      <View
-        className="absolute bottom-0 left-0 right-0 flex-row justify-between rounded-t-[28px] bg-[rgba(255,255,255,0.96)] px-7 pt-4 pb-6"
-        style={{
-          shadowColor: '#000000',
-          shadowOpacity: 0.08,
-          shadowRadius: 16,
-          shadowOffset: { width: 0, height: -4 },
-          elevation: 18,
-        }}>
-        <View className="min-w-[72px] items-center justify-center rounded-[16px] bg-[#EFF6FF] px-4 py-2">
-          <MaterialCommunityIcons color={gardeningTheme.palette.primary} name="gamepad-variant" size={20} />
-          <Text className="mt-1 text-[14px] font-medium leading-5 text-[#1E40AF]">Play</Text>
-        </View>
-        <View className="min-w-[72px] items-center justify-center rounded-[16px] px-4 py-2">
-          <MaterialCommunityIcons color="#64748B" name="poll" size={20} />
-          <Text className="mt-1 text-[14px] font-medium leading-5 text-[#64748B]">Scores</Text>
-        </View>
-        <View className="min-w-[72px] items-center justify-center rounded-[16px] px-4 py-2">
-          <MaterialCommunityIcons color="#64748B" name="account-outline" size={20} />
-          <Text className="mt-1 text-[14px] font-medium leading-5 text-[#64748B]">Profile</Text>
-        </View>
-      </View>
+      <BottomNav activeTab="symbol" onSelectTab={(tab) => onSelectTab?.(tab)} />
     </SafeAreaView>
   );
 }
