@@ -94,15 +94,18 @@ export function useSymbolTapGame(theme: ThemeConfig) {
     }, theme.comboWindowMs);
   };
 
-  const beginRound = (nextRoundNumber: number) => {
+  const beginRound = (nextRoundNumber: number, options?: { resetMistakes?: boolean }) => {
     clearScheduledWork();
     const nextRound = generateRound(theme, nextRoundNumber);
+    const shouldResetMistakes = options?.resetMistakes ?? false;
 
     setCurrentRound(nextRound);
     setRoundNumber(nextRoundNumber);
     setRoundSeconds(0);
-    setMistakes(0);
-    setMistakesRemaining(theme.mistakeLimit);
+    if (shouldResetMistakes) {
+      setMistakes(0);
+      setMistakesRemaining(theme.mistakeLimit);
+    }
     setCorrectSelections(0);
     setFeedback(defaultFeedback);
     setRoundStatus('playing');
@@ -115,7 +118,7 @@ export function useSymbolTapGame(theme: ThemeConfig) {
     setHasStarted(true);
     setScore(0);
     setSessionSeconds(0);
-    beginRound(1);
+    beginRound(1, { resetMistakes: true });
   };
 
   const returnToIntro = () => {
@@ -308,7 +311,7 @@ export function useSymbolTapGame(theme: ThemeConfig) {
   };
 
   const retryRound = () => {
-    beginRound(Math.max(roundNumber, 1));
+    beginRound(Math.max(roundNumber, 1), { resetMistakes: true });
   };
 
   const secondsRemaining = Math.max(currentRound.roundTimeLimitSeconds - roundSeconds, 0);

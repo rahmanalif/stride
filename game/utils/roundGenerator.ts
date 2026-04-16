@@ -15,23 +15,27 @@ function shuffle<T>(items: T[]) {
   return next;
 }
 
-function buildGuaranteedTargetPool(theme: ThemeConfig, targetIds: IconId[]) {
-  return targetIds.flatMap((iconId) =>
-    Array.from({ length: randomInt(theme.requiredMatchesRange.min, theme.requiredMatchesRange.max) }, () => iconId)
-  );
-}
-
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
 function getDifficultyProfile(theme: ThemeConfig, roundId: number) {
-  const columns = roundId >= 4 ? 5 : theme.gridColumns;
+  const columns = roundId >= 10 ? 5 : theme.gridColumns;
   const gridCellCount = columns * columns;
-  const targetCount = clamp(2 + Math.floor((roundId - 1) / 2), theme.targetRange.min, theme.targetRange.max);
-  const minMatchesPerTarget = clamp(theme.requiredMatchesRange.min + Math.floor((roundId - 1) / 3), 2, 4);
-  const maxMatchesPerTarget = clamp(minMatchesPerTarget + 1, minMatchesPerTarget, 5);
-  const roundTimeLimitSeconds = clamp(theme.roundTimeRange.max - (roundId - 1), theme.roundTimeRange.min, theme.roundTimeRange.max);
+
+  const targetCount =
+    roundId <= 4 ? 2 : roundId <= 14 ? 3 : 4;
+
+  const minMatchesPerTarget =
+    roundId <= 4 ? 2 : roundId <= 9 ? 2 : roundId <= 14 ? 2 : 2;
+  const maxMatchesPerTarget =
+    roundId <= 4 ? 2 : roundId <= 9 ? 2 : roundId <= 14 ? 3 : 2;
+
+  const roundTimeLimitSeconds = clamp(
+    roundId <= 4 ? 24 : roundId <= 9 ? 26 : roundId <= 14 ? 28 : 30,
+    theme.roundTimeRange.min,
+    theme.roundTimeRange.max
+  );
 
   return {
     columns,
@@ -73,7 +77,11 @@ export function generateRound(theme: ThemeConfig, roundId: number): RoundDefinit
     )
   );
   const remainingCells = Math.max(difficulty.gridCellCount - guaranteedTargets.length, 0);
-  const targetBias = clamp(0.28 + (roundId - 1) * 0.05, 0.28, 0.55);
+  const targetBias = clamp(
+    roundId <= 4 ? 0.08 : roundId <= 9 ? 0.1 : roundId <= 14 ? 0.12 : 0.14,
+    0.08,
+    0.16
+  );
   const filler = Array.from({ length: remainingCells }, () => pickWeightedFiller(iconIds, targetIds, targetBias));
 
   return {
