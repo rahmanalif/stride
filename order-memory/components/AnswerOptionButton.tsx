@@ -41,7 +41,7 @@ export function AnswerOptionButton({
         transform: [{ scale: pressed ? 0.98 : 1 }],
       })}>
       <View
-        className="min-h-[120px] items-center justify-center rounded-[24px] border-2 px-3 py-4"
+        className="min-h-[104px] items-center justify-center rounded-[20px] border-2 px-2 py-3"
         style={{
           backgroundColor,
           borderColor,
@@ -51,12 +51,12 @@ export function AnswerOptionButton({
           shadowOffset: { width: 0, height: 0 },
           elevation: 0,
         }}>
-        <GardenIcon color={iconColor} icon={item} size={30} />
-        <Text className="mt-3 text-center text-[16px] font-semibold" style={{ color: labelColor }}>
+        <GardenIcon color={iconColor} icon={item} size={24} />
+        <Text className="mt-2 text-center text-[13px] font-semibold leading-4" style={{ color: labelColor }}>
           {item.label}
         </Text>
         {selectedOrder ? (
-          <Text className="mt-1 text-[12px] font-bold tracking-[0.6px]" style={{ color: labelColor }}>
+          <Text className="mt-1 text-[11px] font-bold tracking-[0.4px]" style={{ color: labelColor }}>
             {isIncorrectSelection ? 'WRONG' : `STEP ${selectedOrder}`}
           </Text>
         ) : null}

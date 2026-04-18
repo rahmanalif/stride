@@ -21,12 +21,12 @@ export function AnswerGrid({
   theme,
 }: AnswerGridProps) {
   return (
-    <View className="flex-row flex-wrap gap-4 pt-4">
+    <View className="flex-row flex-wrap justify-between gap-y-4 pt-4">
       {items.map((item) => {
         const selectedIndex = selectedAnswers.findIndex((selectedItem) => selectedItem.id === item.id);
 
         return (
-          <View key={item.id} className="w-[48%]">
+          <View key={item.id} className="w-[31%]">
             <AnswerOptionButton
               disabled={disabled}
               isIncorrectSelection={incorrectItemId === item.id}
