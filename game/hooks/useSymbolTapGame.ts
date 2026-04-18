@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FeedbackState, GridCell, ThemeConfig } from '@/game/types';
 import { countTargetCells, generateRound } from '@/game/utils/roundGenerator';
 
-type RoundStatus = 'idle' | 'playing' | 'transition';
+type RoundStatus = 'idle' | 'playing' | 'paused' | 'transition';
 type RoundResult =
   | {
       accuracyLabel: string;
@@ -49,6 +49,7 @@ export function useSymbolTapGame(theme: ThemeConfig) {
 
   const timeoutRefs = useRef<ReturnType<typeof setTimeout>[]>([]);
   const comboTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const feedbackBeforePauseRef = useRef<FeedbackState>(defaultFeedback);
 
   const clearScheduledWork = () => {
     timeoutRefs.current.forEach((timeoutId) => clearTimeout(timeoutId));
@@ -137,6 +138,28 @@ export function useSymbolTapGame(theme: ThemeConfig) {
     setRoundResult(null);
     setComboCount(0);
     setMultiplier(1);
+  };
+
+  const togglePause = () => {
+    if (!hasStarted) {
+      return;
+    }
+
+    if (roundStatus === 'playing') {
+      feedbackBeforePauseRef.current = feedback;
+      resetCombo();
+      setRoundStatus('paused');
+      setFeedback({
+        tone: 'neutral',
+        message: 'Game paused. Tap play to continue this round.',
+      });
+      return;
+    }
+
+    if (roundStatus === 'paused') {
+      setRoundStatus('playing');
+      setFeedback(feedbackBeforePauseRef.current);
+    }
   };
 
   const totalTargets = countTargetCells(currentRound.grid, currentRound.targetIds);
@@ -327,6 +350,7 @@ export function useSymbolTapGame(theme: ThemeConfig) {
     feedback,
     handleCellPress,
     hasStarted,
+    isPaused: roundStatus === 'paused',
     mistakes,
     mistakesRemaining,
     multiplier,
@@ -340,6 +364,7 @@ export function useSymbolTapGame(theme: ThemeConfig) {
     score,
     sessionTimerLabel: formatSeconds(sessionSeconds),
     startGame,
+    togglePause,
     returnToIntro,
     theme,
   };

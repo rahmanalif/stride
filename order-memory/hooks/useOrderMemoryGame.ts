@@ -40,6 +40,7 @@ export function useOrderMemoryGame(theme: OrderMemoryTheme) {
   const [failedAtStep, setFailedAtStep] = useState<number | null>(null);
 
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const pausedPhaseRef = useRef<OrderMemoryPhase>('howToPlay');
 
   const difficulty = useMemo(() => getRoundDifficulty(round), [round]);
 
@@ -146,6 +147,42 @@ export function useOrderMemoryGame(theme: OrderMemoryTheme) {
       }, totalDuration + 650)
     );
   }, [clearScheduledWork, difficulty, targetSequence]);
+
+  const togglePause = useCallback(() => {
+    if (!['ready', 'memorization', 'transition', 'answering', 'paused'].includes(phase)) {
+      return;
+    }
+
+    if (phase === 'paused') {
+      const previousPhase = pausedPhaseRef.current;
+
+      if (previousPhase === 'answering') {
+        setPhase('answering');
+        setFeedback({
+          message: 'Tap the symbols in the same order they appeared.',
+          tone: 'neutral',
+        });
+        return;
+      }
+
+      if (previousPhase === 'ready') {
+        setPhase('ready');
+        setFeedback(defaultFeedback);
+        return;
+      }
+
+      startMemorization();
+      return;
+    }
+
+    pausedPhaseRef.current = phase;
+    clearScheduledWork();
+    setPhase('paused');
+    setFeedback({
+      message: 'Game paused. Tap play to continue this round.',
+      tone: 'neutral',
+    });
+  }, [clearScheduledWork, phase, startMemorization]);
 
   const startRound = useCallback(
     (nextRound: number, resetScore = false) => {
@@ -286,6 +323,7 @@ export function useOrderMemoryGame(theme: OrderMemoryTheme) {
     handleNextRound,
     handlePlayNow,
     handleRetry,
+    isPaused: phase === 'paused',
     memorizationIndex,
     phase,
     remainingSeconds,
@@ -295,5 +333,6 @@ export function useOrderMemoryGame(theme: OrderMemoryTheme) {
     selectedAnswers,
     targetSequence,
     theme,
+    togglePause,
   };
 }

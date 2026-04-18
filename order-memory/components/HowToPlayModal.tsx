@@ -17,7 +17,7 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
     <Modal animationType="fade" transparent visible={visible}>
       <View className="flex-1 items-center justify-center bg-[rgba(248,250,251,0.96)] px-6">
         <View
-          className="w-full max-w-[360px] rounded-[32px] px-7 py-8"
+          className="w-full max-w-[360px] rounded-[32px] px-7 py-4"
           style={{
             backgroundColor: theme.palette.panel,
             shadowColor: '#191C1D',
@@ -26,21 +26,21 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
             shadowOffset: { width: 0, height: 18 },
             elevation: 12,
           }}>
-          <Text className="text-[34px] font-black leading-[40px] text-[#0040A1]">How To Play</Text>
-          <Text className="mt-2 text-[18px] font-semibold leading-[26px]" style={{ color: theme.palette.secondary }}>
+          <Text className="text-[34px] font-black leading-[40px] text-[#0040A1] py-4">How To Play</Text>
+          <Text className="py-2 text-[18px] font-semibold leading-[26px]" style={{ color: theme.palette.secondary }}>
             {theme.gameName}
           </Text>
 
-          <Text className="mt-7 text-[18px] leading-[30px]" style={{ color: theme.palette.text }}>
+          <Text className="py-2 text-[18px] leading-[30px]" style={{ color: theme.palette.text }}>
             Watch each symbol appear one by one. When the full sequence ends, tap the same symbols back in
             the exact order.
           </Text>
 
           <View className="mt-7 rounded-[28px] px-5 py-6" style={{ backgroundColor: theme.palette.panelAlt }}>
-            <View className="flex-row justify-between">
+            <View className="flex-row justify-between py-2">
               {previewItems.map((item, index) => (
                 <View key={item.id} className="items-center">
-                  <View className="h-14 w-14 items-center justify-center rounded-[18px] bg-white">
+                  <View className="h-14 w-14 items-center justify-center rounded-[18px] py-2 bg-white">
                     <GardenIcon icon={item} size={28} />
                   </View>
                   <Text className="mt-2 text-[12px] font-bold" style={{ color: theme.palette.secondary }}>
@@ -49,7 +49,7 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
                 </View>
               ))}
             </View>
-            <Text className="mt-5 text-center text-[15px] leading-6" style={{ color: theme.palette.text }}>
+            <Text className="mt-5 text-center text-[15px] leading-6 py-2" style={{ color: theme.palette.text }}>
               Large buttons, calm pacing, and one step at a time so the round stays easy to follow.
             </Text>
           </View>

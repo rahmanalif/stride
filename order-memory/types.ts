@@ -6,6 +6,7 @@ export type OrderMemoryPhase =
   | 'memorization'
   | 'transition'
   | 'answering'
+  | 'paused'
   | 'success'
   | 'failure'
   | 'roundComplete'

@@ -89,23 +89,34 @@ export function GameScreen({ onSelectTab }: GameScreenProps) {
             <View>
               <Text className="text-[18px] font-extrabold leading-7 text-[#191C1D]">Round {game.roundNumber || 1}</Text>
               <Text className="mt-[2px] max-w-[220px] text-[14px] leading-5" numberOfLines={2} style={{ color: gardeningTheme.palette.text }}>
-                {game.feedback.tone === 'neutral'
+                {game.feedback.tone === 'neutral' && !game.isPaused
                   ? `Find all targets before time runs out. Combo window: ${game.comboWindowSeconds}s.`
                   : game.feedback.message}
               </Text>
             </View>
-            <View
-              className="h-12 w-12 items-center justify-center rounded-full"
-              style={{
-                backgroundColor: gardeningTheme.palette.primary,
-                shadowColor: '#0F52BA',
-                shadowOpacity: 0.22,
-                shadowRadius: 12,
-                shadowOffset: { width: 0, height: 6 },
-                elevation: 6,
-              }}>
-              <MaterialCommunityIcons color="#FFFFFF" name="pause" size={16} />
-            </View>
+            <Pressable
+              accessibilityLabel={game.isPaused ? 'Resume game' : 'Pause game'}
+              accessibilityRole="button"
+              disabled={!game.hasStarted || game.roundStatus === 'transition'}
+              hitSlop={8}
+              onPress={game.togglePause}
+              style={({ pressed }) => ({
+                opacity: !game.hasStarted || game.roundStatus === 'transition' ? 0.55 : pressed ? 0.9 : 1,
+                transform: [{ scale: pressed ? 0.96 : 1 }],
+              })}>
+              <View
+                className="h-12 w-12 items-center justify-center rounded-full"
+                style={{
+                  backgroundColor: gardeningTheme.palette.primary,
+                  shadowColor: '#0F52BA',
+                  shadowOpacity: 0.22,
+                  shadowRadius: 12,
+                  shadowOffset: { width: 0, height: 6 },
+                  elevation: 6,
+                }}>
+                <MaterialCommunityIcons color="#FFFFFF" name={game.isPaused ? 'play' : 'pause'} size={16} />
+              </View>
+            </Pressable>
           </View>
         </View>
       </ScrollView>

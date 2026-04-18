@@ -104,9 +104,10 @@ export function OrderMemoryScreen({ onSelectTab }: OrderMemoryScreenProps) {
             onPress={game.handleExit}>
             <MaterialCommunityIcons color={orderMemoryTheme.palette.primary} name="arrow-left" size={22} />
           </Pressable>
-          <View className="absolute left-0 right-0 items-center">
-            <Text className="text-[16px] font-semibold tracking-[-0.4px] text-[#1D4ED8]">Symbol Tap</Text>
+          <View className="flex-1 items-center px-4">
+            <Text className="text-[36px] font-semibold tracking-[-0.4px] text-[#1D4ED8]">Order Memory</Text>
           </View>
+          <View className="h-8 w-8" />
         </View>
       </View>
 
@@ -157,6 +158,41 @@ export function OrderMemoryScreen({ onSelectTab }: OrderMemoryScreenProps) {
             <Text className="mt-1 text-center text-[16px] font-medium leading-[26px]" style={{ color: '#737785' }}>
               Focus on the colors and shapes.
             </Text>
+          </View>
+
+          <View className="items-center pt-12">
+            {game.isPaused ? (
+              <Text className="mb-4 text-[15px] font-semibold" style={{ color: orderMemoryTheme.palette.primary }}>
+                Paused
+              </Text>
+            ) : null}
+            <Pressable
+              accessibilityLabel={game.isPaused ? 'Resume game' : 'Pause game'}
+              accessibilityRole="button"
+              disabled={!['ready', 'memorization', 'transition', 'answering', 'paused'].includes(game.phase)}
+              hitSlop={10}
+              onPress={game.togglePause}
+              style={({ pressed }) => ({
+                opacity: !['ready', 'memorization', 'transition', 'answering', 'paused'].includes(game.phase)
+                  ? 0.45
+                  : pressed
+                    ? 0.9
+                    : 1,
+                transform: [{ scale: pressed ? 0.96 : 1 }],
+              })}>
+              <View
+                className="h-14 w-14 items-center justify-center rounded-full"
+                style={{
+                  backgroundColor: orderMemoryTheme.palette.primary,
+                  shadowColor: '#0F52BA',
+                  shadowOpacity: 0.22,
+                  shadowRadius: 12,
+                  shadowOffset: { width: 0, height: 6 },
+                  elevation: 8,
+                }}>
+                <MaterialCommunityIcons color="#FFFFFF" name={game.isPaused ? 'play' : 'pause'} size={22} />
+              </View>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
