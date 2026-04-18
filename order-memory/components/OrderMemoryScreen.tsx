@@ -1,14 +1,13 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { ScrollView, Text, View } from 'react-native';
-import { Pressable } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ORDER_MEMORY_RULES, orderMemoryTheme } from '@/order-memory/config';
 import { AnswerGrid } from '@/order-memory/components/AnswerGrid';
 import { HowToPlayModal } from '@/order-memory/components/HowToPlayModal';
 import { MemorySequenceDisplay } from '@/order-memory/components/MemorySequenceDisplay';
 import { ProgressHeader } from '@/order-memory/components/ProgressHeader';
 import { RoundResultModal } from '@/order-memory/components/RoundResultModal';
+import { ORDER_MEMORY_RULES, orderMemoryTheme } from '@/order-memory/config';
 import { useOrderMemoryGame } from '@/order-memory/hooks/useOrderMemoryGame';
 import { BottomNav, GameTab } from '@/time-accuracy/components/GameChrome';
 
@@ -105,7 +104,7 @@ export function OrderMemoryScreen({ onSelectTab }: OrderMemoryScreenProps) {
             <MaterialCommunityIcons color={orderMemoryTheme.palette.primary} name="arrow-left" size={22} />
           </Pressable>
           <View className="flex-1 items-center px-4">
-            <Text className="text-[36px] font-semibold tracking-[-0.4px] text-[#1D4ED8]">Order Memory</Text>
+            <Text className="text-4xl font-semibold tracking-[-0.4px] text-[#1D4ED8]">Order Memory</Text>
           </View>
           <View className="h-8 w-8" />
         </View>
