@@ -30,22 +30,29 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
 
   return (
     <Modal animationType="fade" transparent visible={visible}>
-      <View className="flex-1 items-center justify-center bg-[rgba(248,250,251,0.96)] px-[22px] py-7">
+      <View className="flex-1 items-center justify-center bg-[rgba(8,15,37,0.52)] px-[22px] py-7">
         <View
-          className="w-full max-w-[360px] gap-[18px] rounded-[36px] px-7 py-[34px]"
+          className="w-full max-w-[360px] gap-[18px] rounded-[36px] border px-7 py-[34px]"
           style={{
             backgroundColor: theme.palette.panel,
+            borderColor: 'rgba(255,255,255,0.58)',
             shadowColor: '#191C1D',
-            shadowOpacity: 0.08,
-            shadowRadius: 28,
-            shadowOffset: { width: 0, height: 18 },
-            elevation: 12,
+            shadowOpacity: 0.2,
+            shadowRadius: 36,
+            shadowOffset: { width: 0, height: 22 },
+            elevation: 18,
           }}>
+          {/* <View className="self-center rounded-full px-4 py-2" style={{ backgroundColor: 'rgba(15, 82, 186, 0.1)' }}>
+            <Text className="text-[12px] font-bold uppercase tracking-[1.2px]" style={{ color: theme.palette.primary }}>
+              Quick Guide
+            </Text>
+          </View> */}
+
           <View className="gap-[6px]">
             <Text className="text-[36px] font-black leading-[44px] text-[#0040A1]">How To Play</Text>
-            <Text className="text-[18px] font-semibold leading-[26px]" style={{ color: theme.palette.secondary }}>
+            {/* <Text className="text-[18px] font-semibold leading-[26px]" style={{ color: theme.palette.secondary }}>
               {theme.gameName}
-            </Text>
+            </Text> */}
           </View>
 
           <View className="gap-7">
@@ -55,13 +62,13 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
             </Text>
 
             <View className="items-center gap-[18px] rounded-[32px] px-4 py-[22px]" style={{ backgroundColor: theme.palette.panelAlt }}>
-              <View className="flex-row gap-[18px]">
+              {/* <View className="flex-row gap-[18px]">
                 {previewIcons.map((icon) => (
                   <View key={icon.id} className="h-[58px] w-[58px] items-center justify-center rounded-[22px] bg-white">
-                    <GardenIcon icon={icon} size={30} />
+                    <GardenIcon icon={icon} size={20} />
                   </View>
                 ))}
-              </View>
+              </View> */}
 
               <View className="w-full gap-y-3">
                 {previewGridRows.map((row, rowIndex) => (
@@ -105,13 +112,7 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
             </LinearGradient>
           </Pressable>
 
-          <View className="min-h-[58px] items-center justify-center rounded-[24px] bg-[#E1E3E4]">
-            <Text className="text-[18px] font-extrabold" style={{ color: theme.palette.secondary }}>
-              Explore Other Games
-            </Text>
-          </View>
-
-          <Pressable
+          {/* <Pressable
             accessibilityRole="checkbox"
             className="flex-row items-center justify-center gap-[14px] pt-[6px]"
             onPress={() => setSkipHint((value) => !value)}>
@@ -126,7 +127,7 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
             <Text className="text-[16px] font-semibold leading-6" style={{ color: theme.palette.text }}>
               Don&apos;t show this again
             </Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     </Modal>

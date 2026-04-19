@@ -4,6 +4,7 @@ import { GardenIcon } from '@/game/components/GardenIcon';
 import { OrderMemoryItem, OrderMemoryTheme } from '@/order-memory/types';
 
 type AnswerOptionButtonProps = {
+  compact?: boolean;
   disabled?: boolean;
   isIncorrectSelection?: boolean;
   item: OrderMemoryItem;
@@ -13,6 +14,7 @@ type AnswerOptionButtonProps = {
 };
 
 export function AnswerOptionButton({
+  compact = false,
   disabled = false,
   isIncorrectSelection = false,
   item,
@@ -41,7 +43,7 @@ export function AnswerOptionButton({
         transform: [{ scale: pressed ? 0.98 : 1 }],
       })}>
       <View
-        className="min-h-[104px] items-center justify-center rounded-[20px] border-2 px-2 py-3"
+        className={`${compact ? 'min-h-[84px] rounded-[18px] px-2 py-2' : 'min-h-[104px] rounded-[20px] px-2 py-3'} items-center justify-center border-2`}
         style={{
           backgroundColor,
           borderColor,
@@ -51,12 +53,12 @@ export function AnswerOptionButton({
           shadowOffset: { width: 0, height: 0 },
           elevation: 0,
         }}>
-        <GardenIcon color={iconColor} icon={item} size={24} />
-        <Text className="mt-2 text-center text-[13px] font-semibold leading-4" style={{ color: labelColor }}>
+        <GardenIcon color={iconColor} icon={item} size={compact ? 20 : 24} />
+        <Text className={`text-center font-semibold ${compact ? 'mt-1 text-[12px] leading-[14px]' : 'mt-2 text-[13px] leading-4'}`} style={{ color: labelColor }}>
           {item.label}
         </Text>
         {selectedOrder ? (
-          <Text className="mt-1 text-[11px] font-bold tracking-[0.4px]" style={{ color: labelColor }}>
+          <Text className={`${compact ? 'mt-[2px] text-[10px]' : 'mt-1 text-[11px]'} font-bold tracking-[0.4px]`} style={{ color: labelColor }}>
             {isIncorrectSelection ? 'WRONG' : `STEP ${selectedOrder}`}
           </Text>
         ) : null}

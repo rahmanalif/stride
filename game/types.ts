@@ -6,7 +6,8 @@ export type IconId =
   | 'leaf'
   | 'butterfly'
   | 'bee'
-  | 'shovel';
+  | 'shovel'
+  | 'watering';
 
 export type GridCellStatus = 'idle' | 'hit' | 'miss';
 

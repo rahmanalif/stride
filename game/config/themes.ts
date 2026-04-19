@@ -16,6 +16,7 @@ export const gardeningTheme: ThemeConfig = {
     { id: 'butterfly', label: 'Sunlight', shortLabel: 'SUN', iconName: 'white-balance-sunny', accent: '#C0C6D6' },
     { id: 'bee', label: 'Bloom', shortLabel: 'FLOW', iconName: 'flower-pollen-outline', accent: '#C0C6D6' },
     { id: 'shovel', label: 'Seed', shortLabel: 'SEED', iconName: 'seed-outline', accent: '#C0C6D6' },
+    { id: 'watering', label: 'Watering Can', shortLabel: 'WATR', iconName: 'watering-can-outline', accent: '#4B6958' },
   ],
   palette: {
     background: '#F8FAFB',

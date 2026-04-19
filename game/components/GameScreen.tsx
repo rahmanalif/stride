@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useEffect, useRef } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,10 +15,21 @@ import { BottomNav, GameTab } from '@/time-accuracy/components/GameChrome';
 
 type GameScreenProps = {
   onSelectTab?: (tab: GameTab) => void;
+  skipIntro?: boolean;
 };
 
-export function GameScreen({ onSelectTab }: GameScreenProps) {
+export function GameScreen({ onSelectTab, skipIntro = false }: GameScreenProps) {
   const game = useSymbolTapGame(gardeningTheme);
+  const hasAutoStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (!skipIntro || hasAutoStartedRef.current || game.hasStarted) {
+      return;
+    }
+
+    hasAutoStartedRef.current = true;
+    game.startGame();
+  }, [game.hasStarted, skipIntro]);
 
   const handleBackPress = () => {
     game.returnToIntro();

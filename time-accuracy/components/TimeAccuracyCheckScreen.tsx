@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,10 +14,21 @@ import { useAccuracyCheckGame } from '@/time-accuracy/hooks/useAccuracyCheckGame
 
 type TimeAccuracyCheckScreenProps = {
   onSelectTab?: (tab: GameTab) => void;
+  skipIntro?: boolean;
 };
 
-export function TimeAccuracyCheckScreen({ onSelectTab }: TimeAccuracyCheckScreenProps) {
+export function TimeAccuracyCheckScreen({ onSelectTab, skipIntro = false }: TimeAccuracyCheckScreenProps) {
   const game = useAccuracyCheckGame();
+  const hasAutoStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (!skipIntro || hasAutoStartedRef.current || game.status !== 'howToPlay') {
+      return;
+    }
+
+    hasAutoStartedRef.current = true;
+    game.handlePlayNow();
+  }, [game.status, skipIntro]);
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: TIME_ACCURACY_THEME.background }}>

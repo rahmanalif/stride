@@ -20,7 +20,7 @@ type BottomNavProps = {
 export function TopBar({ onBack, title = 'Time Accuracy Check' }: GameChromeProps) {
   return (
     <View
-      className="flex-row items-center px-6 pt-3 pb-4"
+      className="flex-row items-center px-6 pt-3 pb-4 "
       style={{ backgroundColor: 'rgba(248,250,251,0.92)' }}>
       <Pressable
         accessibilityLabel="Go back"
@@ -71,23 +71,32 @@ export function BottomNav({ activeTab, onSelectTab }: BottomNavProps) {
         const isActive = activeTab === item.key;
 
         return (
-          <Pressable key={item.label} onPress={() => onSelectTab(item.key)}>
+          <Pressable
+            key={item.label}
+            onPress={() => onSelectTab(item.key)}
+            style={{ flex: 1, alignItems: 'center' }}>
             {isActive ? (
               <LinearGradient
-                className="rounded-[24px] px-4 py-2"
+                className="rounded-[24px] px-3 py-3"
+                style={{ width: '100%', maxWidth: 110 }}
                 colors={[TIME_ACCURACY_THEME.blue, TIME_ACCURACY_THEME.primaryAlt]}
                 end={{ x: 0.85, y: 0.7 }}
                 start={{ x: 0.1, y: 0.1 }}>
-                <View className="min-w-[74px] items-center">
+                <View className="min-h-[52px] items-center justify-center">
                   <MaterialCommunityIcons color="#FFFFFF" name={item.icon} size={18} />
-                  <Text className="mt-1 text-[11px] text-white">{item.label}</Text>
+                  <Text className="mt-1 text-center text-[11px] leading-[14px] text-white" numberOfLines={2}>
+                    {item.label}
+                  </Text>
                 </View>
               </LinearGradient>
             ) : (
-              <View className="px-4 py-2">
-                <View className="min-w-[74px] items-center">
+              <View className="rounded-[24px] px-3 py-3" style={{ width: '100%', maxWidth: 110 }}>
+                <View className="min-h-[52px] items-center justify-center">
                   <MaterialCommunityIcons color={TIME_ACCURACY_THEME.secondary} name={item.icon} size={18} />
-                  <Text className="mt-1 text-[11px]" style={{ color: TIME_ACCURACY_THEME.secondary }}>
+                  <Text
+                    className="mt-1 text-center text-[11px] leading-[14px]"
+                    numberOfLines={2}
+                    style={{ color: TIME_ACCURACY_THEME.secondary }}>
                     {item.label}
                   </Text>
                 </View>

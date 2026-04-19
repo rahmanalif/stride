@@ -15,17 +15,23 @@ export function HowToPlayModal({ onPlayNow, theme, visible }: HowToPlayModalProp
 
   return (
     <Modal animationType="fade" transparent visible={visible}>
-      <View className="flex-1 items-center justify-center bg-[rgba(248,250,251,0.96)] px-6">
+      <View className="flex-1 items-center justify-center bg-[rgba(8,15,37,0.5)] px-6">
         <View
-          className="w-full max-w-[360px] rounded-[32px] px-7 py-4"
+          className="w-full max-w-[360px] rounded-[32px] border px-7 py-5"
           style={{
             backgroundColor: theme.palette.panel,
+            borderColor: 'rgba(255,255,255,0.6)',
             shadowColor: '#191C1D',
-            shadowOpacity: 0.1,
-            shadowRadius: 24,
-            shadowOffset: { width: 0, height: 18 },
-            elevation: 12,
+            shadowOpacity: 0.18,
+            shadowRadius: 32,
+            shadowOffset: { width: 0, height: 22 },
+            elevation: 16,
           }}>
+          <View className="mb-2 self-center rounded-full px-4 py-2" style={{ backgroundColor: 'rgba(15, 82, 186, 0.1)' }}>
+            <Text className="text-[12px] font-bold uppercase tracking-[1.2px]" style={{ color: theme.palette.primary }}>
+              Quick Guide
+            </Text>
+          </View>
           <Text className="text-[34px] font-black leading-[40px] text-[#0040A1] py-4">How To Play</Text>
           <Text className="py-2 text-[18px] font-semibold leading-[26px]" style={{ color: theme.palette.secondary }}>
             {theme.gameName}
