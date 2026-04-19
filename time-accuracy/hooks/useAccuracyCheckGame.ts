@@ -67,17 +67,26 @@ export function useAccuracyCheckGame() {
   const targetsRef = useRef(targets);
   const animationFrameRef = useRef<number | null>(null);
   const lastTimestampRef = useRef<number | null>(null);
+  const missesRef = useRef(0);
+  const opportunityStateRef = useRef<Record<string, { inWindow: boolean; tapped: boolean }>>({});
+
+  const registerMiss = useCallback(() => {
+    missesRef.current += 1;
+    setMisses(missesRef.current);
+    setStreak(0);
+    setScore((value) => Math.max(0, value - TIME_ACCURACY_RULES.tapPenalty));
+  }, []);
 
   const handleRoundExpire = useCallback(() => {
     setStatus('roundComplete');
     setResultsSummary({
-      accuracy: hits + misses > 0 ? Math.round((hits / (hits + misses)) * 100) : 0,
+      accuracy: hits + missesRef.current > 0 ? Math.round((hits / (hits + missesRef.current)) * 100) : 0,
       hits,
-      misses,
+      misses: missesRef.current,
       round,
       score,
     });
-  }, [hits, misses, round, score]);
+  }, [hits, round, score]);
 
   const { remainingSeconds, resetTimer, setRemainingSeconds } = useGameTimer(
     status === 'active',
@@ -118,6 +127,7 @@ export function useAccuracyCheckGame() {
         animationFrameRef.current = null;
       }
       lastTimestampRef.current = null;
+      opportunityStateRef.current = {};
       return undefined;
     }
 
@@ -130,11 +140,28 @@ export function useAccuracyCheckGame() {
       lastTimestampRef.current = timestamp;
 
       setTargets((previous) =>
-        previous.map((target) => ({
-          ...target,
-          angleBlue: advanceAngle(target.angleBlue, target.blueSpeed, deltaSeconds),
-          angleRed: target.angleRed,
-        }))
+        previous.map((target) => {
+          const nextAngleBlue = advanceAngle(target.angleBlue, target.blueSpeed, deltaSeconds);
+          const distance = getAngularDistance(target.angleRed, nextAngleBlue);
+          const withinWindow = distance <= thresholds.good;
+          const opportunityState = opportunityStateRef.current[target.id] ?? { inWindow: false, tapped: false };
+
+          if (withinWindow && !opportunityState.inWindow) {
+            opportunityStateRef.current[target.id] = { inWindow: true, tapped: false };
+          } else if (!withinWindow && opportunityState.inWindow) {
+            if (!opportunityState.tapped) {
+              registerMiss();
+            }
+
+            opportunityStateRef.current[target.id] = { inWindow: false, tapped: false };
+          }
+
+          return {
+            ...target,
+            angleBlue: nextAngleBlue,
+            angleRed: target.angleRed,
+          };
+        })
       );
 
       animationFrameRef.current = requestAnimationFrame(animate);
@@ -193,6 +220,7 @@ export function useAccuracyCheckGame() {
 
       const distance = getAngularDistance(target.angleRed, target.angleBlue);
       const judgment = judgeTap(distance, thresholds);
+      const opportunityState = opportunityStateRef.current[targetId];
 
       setTargets((previous) =>
         previous.map((item) =>
@@ -201,11 +229,13 @@ export function useAccuracyCheckGame() {
       );
 
       if (judgment === 'miss') {
-        setMisses((value) => value + 1);
-        setStreak(0);
-        setScore((value) => Math.max(0, value + getPointsForJudgment(judgment, 0)));
+        registerMiss();
         void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         return;
+      }
+
+      if (opportunityState?.inWindow) {
+        opportunityStateRef.current[targetId] = { ...opportunityState, tapped: true };
       }
 
       setHits((value) => value + 1);
@@ -213,7 +243,7 @@ export function useAccuracyCheckGame() {
       setScore((value) => value + getPointsForJudgment(judgment, streak + 1));
       void Haptics.selectionAsync();
     },
-    [status, streak, thresholds]
+    [registerMiss, status, streak, thresholds]
   );
 
   const startRound = useCallback(
@@ -230,8 +260,11 @@ export function useAccuracyCheckGame() {
         setScore(0);
         setHits(0);
         setMisses(0);
+        missesRef.current = 0;
         setStreak(0);
       }
+
+      opportunityStateRef.current = {};
     },
     [resetTimer, setRemainingSeconds]
   );
@@ -257,10 +290,26 @@ export function useAccuracyCheckGame() {
     setScore(0);
     setHits(0);
     setMisses(0);
+    missesRef.current = 0;
     setStreak(0);
     setCountdown(TIME_ACCURACY_RULES.countdownFrom);
     setRemainingSeconds(TIME_ACCURACY_RULES.roundDurationSeconds);
+    opportunityStateRef.current = {};
   }, [setRemainingSeconds]);
+
+  const togglePause = useCallback(() => {
+    setStatus((currentStatus) => {
+      if (currentStatus === 'active') {
+        return 'paused';
+      }
+
+      if (currentStatus === 'paused') {
+        return 'active';
+      }
+
+      return currentStatus;
+    });
+  }, []);
 
   return {
     accuracy,
@@ -270,6 +319,7 @@ export function useAccuracyCheckGame() {
     handlePlayNow,
     handleRetry,
     handleTapTarget,
+    isPaused: status === 'paused',
     headerStats,
     hits,
     misses,
@@ -279,6 +329,7 @@ export function useAccuracyCheckGame() {
     score,
     status,
     streak,
+    togglePause,
     targets,
   };
 }

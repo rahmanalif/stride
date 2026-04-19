@@ -1,5 +1,6 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useEffect, useRef } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { TIME_ACCURACY_THEME } from '@/time-accuracy/config';
@@ -52,10 +53,42 @@ export function TimeAccuracyCheckScreen({ onSelectTab, skipIntro = false }: Time
 
           <InstructionsCard />
 
-          <View className="mt-5 items-center">
-            <Text className="text-[13px]" style={{ color: TIME_ACCURACY_THEME.text }}>
-              Round {game.round}  |  Hits {game.hits}  |  Misses {game.misses}  |  Streak {game.streak}
-            </Text>
+          <View
+            className="mt-6 flex-row items-center justify-between rounded-[24px] p-6"
+            style={{ backgroundColor: TIME_ACCURACY_THEME.panelAlt }}>
+            <View>
+              <Text className="text-[18px] font-extrabold leading-7" style={{ color: TIME_ACCURACY_THEME.heading }}>
+                Round {game.round}
+              </Text>
+              <Text className="mt-[2px] max-w-[220px] text-[14px] leading-5" style={{ color: TIME_ACCURACY_THEME.text }}>
+                {game.isPaused
+                  ? 'Game paused. Tap play to continue this round.'
+                  : `Hits ${game.hits}  |  Misses ${game.misses}  |  Streak ${game.streak}`}
+              </Text>
+            </View>
+            <Pressable
+              accessibilityLabel={game.isPaused ? 'Resume game' : 'Pause game'}
+              accessibilityRole="button"
+              disabled={!['active', 'paused'].includes(game.status)}
+              hitSlop={8}
+              onPress={game.togglePause}
+              style={({ pressed }) => ({
+                opacity: !['active', 'paused'].includes(game.status) ? 0.55 : pressed ? 0.9 : 1,
+                transform: [{ scale: pressed ? 0.96 : 1 }],
+              })}>
+              <View
+                className="h-12 w-12 items-center justify-center rounded-full"
+                style={{
+                  backgroundColor: TIME_ACCURACY_THEME.primary,
+                  shadowColor: '#0F52BA',
+                  shadowOpacity: 0.22,
+                  shadowRadius: 12,
+                  shadowOffset: { width: 0, height: 6 },
+                  elevation: 6,
+                }}>
+                <MaterialCommunityIcons color="#FFFFFF" name={game.isPaused ? 'play' : 'pause'} size={18} />
+              </View>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
