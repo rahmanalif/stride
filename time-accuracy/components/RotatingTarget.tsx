@@ -59,14 +59,13 @@ export function RotatingTarget({ onPress, state }: RotatingTargetProps) {
           backgroundColor: '#ECEDEF',
           opacity: pressed ? 0.96 : 1,
         })}>
-        <View
+        {/* <View
           className="absolute inset-0 rounded-full"
           style={{
-            borderColor: showSuccessRing || showDangerRing ? ringColor : '#DCDDDF',
+            borderColor: '#DCDDDF',
             borderWidth: 5,
-            opacity: showSuccessRing || showDangerRing ? 0.65 : 1,
           }}
-        />
+        /> */}
         <View
           className="absolute rounded-full"
           style={{
@@ -80,7 +79,7 @@ export function RotatingTarget({ onPress, state }: RotatingTargetProps) {
           style={{
             width: 104,
             height: 104,
-            borderColor: 'rgba(195,198,214,0.7)',
+            borderColor: showSuccessRing || showDangerRing ? ringColor : 'rgba(195,198,214,0.7)',
           }}
         />
 
